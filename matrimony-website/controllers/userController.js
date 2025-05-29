@@ -11,15 +11,15 @@ exports.createUser = async (req, res) => {
       return res.status(400).json({ error: 'Password is required' });
     }
 
-    // Hash password
-    const saltRounds = 10;
-    const password_hash = await bcrypt.hash(password, saltRounds);
+    
+
+
 
     const user = new User({
       first_name,
       last_name,
       email,
-      password_hash,
+      password,
       gender,
       date_of_birth,
       phone_number
@@ -36,7 +36,7 @@ exports.createUser = async (req, res) => {
 // Get all users
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select('-password');
+    const users = await User.find()
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -46,7 +46,7 @@ exports.getAllUsers = async (req, res) => {
 // Get a user by ID
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id)
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.status(200).json(user);
   } catch (error) {

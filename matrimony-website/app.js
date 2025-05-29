@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 const port = 3000;
@@ -15,9 +16,11 @@ mongoose.connect('mongodb+srv://sahuabhikhush:sahuabhi123@cluster0.adpsyur.mongo
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
+app.use('/auth', authRoutes);
 // Routes
 const userRoutes = require('./routes/user.routes');
 app.use('/api/users', userRoutes);  // Ex: POST /api/users, GET /api/users/:id
+
 
 // Start server
 app.listen(port, () => {

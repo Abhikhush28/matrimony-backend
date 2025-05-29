@@ -1,3 +1,4 @@
+// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
@@ -5,7 +6,7 @@ const userSchema = new mongoose.Schema({
   first_name: String,
   last_name: String,
   email: { type: String, unique: true },
-  password_hash: String,
+  password: { type: String, required: true }, // changed to 'pascxsword' instead of 'password_hash'
   gender: String,
   date_of_birth: Date,
   phone_number: String,
@@ -13,14 +14,11 @@ const userSchema = new mongoose.Schema({
   last_login: Date
 });
 
-// ✅ Virtual field for password (not saved directly)
-userSchema.virtual('password')
-  .set(function(password) {
-    this._password = password;
-    this.password_hash = bcrypt.hashSync(password, 10);
-  })
-  .get(function() {
-    return this._password;
-  });
+// Hash password before saving
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
 
 module.exports = mongoose.model('User', userSchema);
