@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth.routes');
+const profileRoutes = require('./routes/profile.routes');
+
 
 const app = express();
 const port = 3000;
@@ -20,6 +22,9 @@ app.use('/auth', authRoutes);
 // Routes
 const userRoutes = require('./routes/user.routes');
 app.use('/api/users', userRoutes);  // Ex: POST /api/users, GET /api/users/:id
+
+app.use('/api/profile', profileRoutes);
+
 
 
 // Start server
